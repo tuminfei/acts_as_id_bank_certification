@@ -1,0 +1,41 @@
+= content_for :title do
+  h2 = "实名认证"
+
+.alert.alert-warning
+  h5 ="提升资金安全、提高账号安全，防范交易风险、由苏宁易支付提供鉴权服务"
+div id="bank_document_page"
+  = simple_form_for @bank_document, remote: true, url: verify_bank_document_path(@bank_document) , as: :bank_document do |f|
+    = f.input :card_holder_name, label:false, placeholder: t('.card_holder_name')
+    = f.input :cert_type_desc, label:false, placeholder: t('.cert_type'), readonly: true
+    = f.input :cert_no, label:false, placeholder: t('.cert_no')
+    = f.input :bank_code, label:false, placeholder: t('.bank_code'), collection: @banks
+    = f.input :card_no, label:false, placeholder: t('.card_no')
+    = f.input :mobile_no, label:false, placeholder: t('.mobile_no')
+    /= f.input :mobile_no, label:false, placeholder: t('.mobile_no')
+    /= f.button :wrapped, "获取验证码", id: "send_doc"
+    .input-group
+      input.form-control type="text" id="vcode" placeholder=t('.msg_auth_code')
+      .input-group-btn.send-code-button
+        button.btn.btn-primary type="submit" id="send_doc" ="获取验证码"
+
+
+  = simple_form_for @bank_document, remote: true, url: check_msg_bank_document_path(@bank_document), as: :bank_document do |f|
+    input name="bank_document[msg_auth_code]" type="hidden" id="msg_auth_code"
+    hr
+    = f.button :wrapped, t('.submit'), cancel: settings_path
+
+
+  = content_for :guide_title do
+    h3
+      i.fa.fa-mobile.fa-2x
+      span = t('.title')
+
+  #loadingMask.mask
+    .img
+      svg width="58" height="58" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff"
+        g fill="none" fill-rule="evenodd"
+          g transform="translate(1 1)" stroke-width="2"
+            circle stroke-opacity=".5" cx="18" cy="18" r="18"
+            path d="M36 18c0-9.94-8.06-18-18-18"
+              animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"
+    h5 ="处理中..."
